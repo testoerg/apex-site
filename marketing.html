@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التسويق والعروض · Apex</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/logo.svg" alt="Apex">
+    <div>
+      <div class="brand-name">Apex</div>
+      <div class="brand-sub">Branches Under Control</div>
+    </div>
+  </div>
+  <div class="sidebar-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" placeholder="بحث سريع...">
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item" href="menu.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>القائمة الرئيسية</span></a>
+    <a class="nav-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg><span>الرئيسية</span></a><a class="nav-item" href="branches.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-5 6 5v12"/><path d="M10 21v-5h4v5"/></svg><span>الفروع</span></a><a class="nav-item" href="sales.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 6h6v6"/></svg><span>المبيعات</span></a><a class="nav-item" href="inventory.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg><span>المخازن</span></a><a class="nav-item" href="orders.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.4 12.2a1.6 1.6 0 0 0 1.6 1.3h8.2a1.6 1.6 0 0 0 1.6-1.3L21 8H6"/></svg><span>الطلبات</span></a><a class="nav-item" href="hr.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 8.5a2.8 2.8 0 1 0 0-5.6M21 20c0-2.8-2-5.1-4.6-5.7"/></svg><span>الموظفين وHR</span></a><a class="nav-item" href="suppliers.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="14" height="10" rx="1.5"/><path d="M15 10h4l3 3v4h-7"/><circle cx="6" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg><span>الموردين والمشتريات</span></a><a class="nav-item" href="accounts.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg><span>الحسابات والمصروفات</span></a><a class="nav-item" href="customers.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg><span>العملاء</span></a><a class="nav-item" href="complaints.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/><path d="M8 9h8M8 13h5"/></svg><span>الشكاوى</span></a><a class="nav-item" href="maintenance.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4L21 6l-3-3-3.3 3.3Z"/></svg><span>الصيانة</span></a><a class="nav-item active" href="marketing.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a2 2 0 0 0 2 2h2l5 4V5L7 9H5a2 2 0 0 0-2 2Z"/><path d="M16 8a5 5 0 0 1 0 8"/></svg><span>التسويق والعروض</span></a><a class="nav-item" href="reports.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5m6 14v-7"/><path d="M3 19h18"/></svg><span>التقارير والتحليلات</span></a><a class="nav-item" href="notifications.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span>التنبيهات</span></a><a class="nav-item" href="permissions.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.8 3.2 8.3 8 9.5 4.8-1.2 8-4.7 8-9.5V6l-8-3Z"/><path d="m9.5 12 2 2 3.5-3.8"/></svg><span>الصلاحيات</span></a><a class="nav-item" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9c.2.5.7.9 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg><span>الإعدادات</span></a>
+  </nav>
+  <div class="sidebar-foot">© 2026 Apex. جميع الحقوق محفوظة.</div>
+</aside>
+
+  <div class="main-col">
+    <div class="topbar">
+    <button class="icon-btn" data-sidebar-toggle style="display:none">☰</button>
+    <div class="topbar-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="ابحث في التسويق والعروض..."></div>
+    <div class="topbar-right">
+      <div class="topbar-date">السبت 13 سبتمبر 2025</div>
+      <div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></div>
+      <div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9c.2.5.7.9 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></div>
+      <div class="user-chip">
+        <div class="user-avatar">مم</div>
+        <div>
+          <div class="user-name">مصطفى محمود</div>
+          <div class="user-role">مدير عام النظام</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="page-body">
+      <div class="page-head"><h1>التسويق والعروض</h1><p>إدارة الحملات التسويقية والخصومات وربطها بأداء المبيعات</p></div>
+      <div class="grid-3"><div class="kpi-card">
+    <div class="kpi-top">
+      <div class="kpi-icon" style="background:#efebff;color:#7c5cff;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a2 2 0 0 0 2 2h2l5 4V5L7 9H5a2 2 0 0 0-2 2Z"/><path d="M16 8a5 5 0 0 1 0 8"/></svg></div>
+      
+    </div>
+    <div class="kpi-value">12</div>
+    <div class="kpi-label">عروض نشطة</div>
+  </div><div class="kpi-card">
+    <div class="kpi-top">
+      <div class="kpi-icon" style="background:#e7edff;color:#2f6bff;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.4 12.2a1.6 1.6 0 0 0 1.6 1.3h8.2a1.6 1.6 0 0 0 1.6-1.3L21 8H6"/></svg></div>
+      
+    </div>
+    <div class="kpi-value">8,450</div>
+    <div class="kpi-label">طلبات استخدمت عرض</div>
+  </div><div class="kpi-card">
+    <div class="kpi-top">
+      <div class="kpi-icon" style="background:#e8f8ef;color:#16a34a;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 6h6v6"/></svg></div>
+      
+    </div>
+    <div class="kpi-value">4.8%</div>
+    <div class="kpi-label">نسبة التحويل</div>
+  </div><div class="card" style="background:linear-gradient(135deg,#e0392b,#f39c1f);color:#fff;border:none;">
+      <div style="font-size:12px;opacity:.9;">عرض مميز</div>
+      <div style="font-size:26px;font-weight:800;margin:6px 0;">خصم 20%</div>
+      <div style="font-size:12.5px;opacity:.9;margin-bottom:14px;">على وجبة المشاوي المشكل، كل الفروع</div>
+      <button class="btn" style="background:#fff;color:#e0392b;border:none;">تفعيل العرض</button>
+    </div></div>
+    <div style="margin-top:16px;"><div class="card">
+    <div class="card-head"><h3>الحملات والعروض</h3><button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> إضافة عرض</button></div>
+    <div class="table-wrap"><table><thead><tr><th>اسم العرض</th><th>الفروع</th><th>من</th><th>إلى</th><th>الاستخدام</th><th>الحالة</th></tr></thead><tbody><tr><td>خصم 20% - وجبة مشاوي</td><td>كل الفروع</td><td>2026-09-01</td><td>2026-09-20</td><td>2,450 طلب</td><td><span class="badge badge-green">نشط</span></td></tr><tr><td>اشترِ 2 واحصل على 1</td><td>فرع القاهرة، الجيزة</td><td>2026-08-15</td><td>2026-09-15</td><td>1,120 طلب</td><td><span class="badge badge-green">نشط</span></td></tr><tr><td>خصم الطلاب 10%</td><td>فرع أكتوبر</td><td>2026-07-01</td><td>2026-08-01</td><td>980 طلب</td><td><span class="badge badge-red">منتهي</span></td></tr></tbody></table></div>
+  </div></div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
