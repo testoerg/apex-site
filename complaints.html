@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="assets/app.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
-<body>
+<body data-page="complaints">
 <div class="app-shell">
   <aside class="sidebar">
   <div class="sidebar-brand">
@@ -75,7 +75,7 @@
   </div></div>
     <div class="grid-2"><div class="card">
     <div class="card-head"><h3>سجل الشكاوى</h3><button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> تسجيل شكوى</button></div>
-    <div class="table-wrap"><table><thead><tr><th>رقم الطلب</th><th>نوع الشكوى</th><th>الفرع</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody><tr><td>#ORD-1025</td><td>وصل مسكوب</td><td>فرع القاهرة</td><td>2026-09-13</td><td><span class="badge badge-orange">جديدة</span></td></tr><tr><td>#ORD-1019</td><td>تأخير أكتر من ساعة</td><td>فرع الجيزة</td><td>2026-09-12</td><td><span class="badge badge-green">تم الحل</span></td></tr><tr><td>#ORD-1011</td><td>جسم غريب - شعر</td><td>فرع أكتوبر</td><td>2026-09-11</td><td><span class="badge badge-green">تم الحل</span></td></tr><tr><td>#ORD-1004</td><td>وصل بارد</td><td>فرع الإسكندرية</td><td>2026-09-10</td><td><span class="badge badge-orange">قيد المراجعة</span></td></tr><tr><td>#ORD-0998</td><td>سلوك من الطيار</td><td>فرع المنصورة</td><td>2026-09-09</td><td><span class="badge badge-blue">تم التعويض</span></td></tr><tr><td>#ORD-0991</td><td>تبديل أوردر بأوردر تاني</td><td>فرع طنطا</td><td>2026-09-08</td><td><span class="badge badge-green">تم الحل</span></td></tr></tbody></table></div>
+    <div class="table-wrap"><table><thead><tr><th>رقم الطلب</th><th>نوع الشكوى</th><th>الفرع</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody><tr><td>#ORD-1025</td><td>العلبة مثقوبة</td><td>فرع القاهرة</td><td>2026-09-13</td><td><span class="badge badge-orange">جديدة</span></td></tr><tr><td>#ORD-1019</td><td>تأخير أكتر من ساعة</td><td>فرع الجيزة</td><td>2026-09-12</td><td><span class="badge badge-green">تم الحل</span></td></tr><tr><td>#ORD-1011</td><td>جسم غريب - شعر</td><td>فرع أكتوبر</td><td>2026-09-11</td><td><span class="badge badge-green">تم الحل</span></td></tr><tr><td>#ORD-1004</td><td>وصل بارد</td><td>فرع الإسكندرية</td><td>2026-09-10</td><td><span class="badge badge-orange">قيد المراجعة</span></td></tr><tr><td>#ORD-0998</td><td>سلوك من الطيار</td><td>فرع المنصورة</td><td>2026-09-09</td><td><span class="badge badge-blue">تم التعويض</span></td></tr><tr><td>#ORD-0991</td><td>تبديل أوردر بأوردر تاني</td><td>فرع طنطا</td><td>2026-09-08</td><td><span class="badge badge-green">تم الحل</span></td></tr><tr><td>#ORD-0987</td><td>نقص في الطلب</td><td>فرع أسيوط</td><td>2026-09-07</td><td><span class="badge badge-green">تم الحل</span></td></tr><tr><td>#ORD-0979</td><td>طعم غير مطابق</td><td>فرع الشرقية</td><td>2026-09-06</td><td><span class="badge badge-orange">قيد المراجعة</span></td></tr><tr><td>#ORD-0965</td><td>العبوة مكسورة</td><td>فرع القاهرة</td><td>2026-09-05</td><td><span class="badge badge-green">تم الحل</span></td></tr><tr><td>#ORD-0952</td><td>تأخير أكتر من ساعة</td><td>فرع الأقصر</td><td>2026-09-04</td><td><span class="badge badge-blue">تم التعويض</span></td></tr></tbody></table></div>
   </div><div class="card">
     <div class="card-head"><h3>أكثر أنواع الشكاوى تكراراً</h3></div>
     <canvas id="compDonut" height="220"></canvas>
@@ -86,7 +86,7 @@
 <script>
     new Chart(document.getElementById('compDonut'), {
       type:'doughnut',
-      data:{ labels:['تأخير الطلب','وصل مسكوب','وصل بارد','جسم غريب','سلوك الطيار','أخرى'],
+      data:{ labels:['تأخير الطلب','العلبة مثقوبة','وصل بارد','جسم غريب','سلوك الطيار','أخرى'],
         datasets:[{ data:[30,22,18,12,10,8], backgroundColor:['#e0392b','#f39c1f','#2f6bff','#7c5cff','#0fb5ae','#c7cede'], borderWidth:0 }] },
       options:{ plugins:{legend:{position:'bottom', labels:{boxWidth:8,font:{size:10}}}}, cutout:'60%' }
     });
