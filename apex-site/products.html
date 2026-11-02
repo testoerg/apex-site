@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المنتجات والخدمات · Apex</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>if(window.Chart){Chart.defaults.color='#8b96b4';Chart.defaults.borderColor='rgba(255,255,255,.08)';Chart.defaults.font.family="Cairo";}</script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/logo.svg" alt="Apex">
+    <div class="brand-text">
+      <div class="brand-name">Apex</div>
+      <div class="brand-sub">Branches Under Control</div>
+    </div>
+    <button class="collapse-btn" type="button" title="طي القائمة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></button>
+  </div>
+  <nav class="sidebar-nav"><a class="nav-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg><span>لوحة التحكم</span></a><a class="nav-item" href="branches.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-5 6 5v12"/><path d="M10 21v-5h4v5"/></svg><span>الفروع</span></a><a class="nav-item" href="employees.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 8.5a2.8 2.8 0 1 0 0-5.6M21 20c0-2.8-2-5.1-4.6-5.7"/></svg><span>الموظفين</span></a><a class="nav-item" href="customers.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg><span>العملاء</span></a><a class="nav-item active" href="products.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg><span>المنتجات / الخدمات</span></a><a class="nav-item" href="sales.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 6h6v6"/></svg><span>المبيعات</span></a><div class="nav-group">
+              <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M5.5 17.5 9 10h5l3 4.5"/><path d="M9 10 8 7H6"/><path d="M12 10l2 4.5h4.5"/></svg><span>الدليفري</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></div>
+              <div class="nav-submenu"><a class="nav-subitem" href="delivery-orders.html"><span>طلبات الدليفري</span></a><a class="nav-subitem" href="delivery-stats.html"><span>إحصائيات الدليفري</span></a></div>
+            </div><a class="nav-item" href="purchases.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="14" height="10" rx="1.5"/><path d="M15 10h4l3 3v4h-7"/><circle cx="6" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg><span>المشتريات</span></a><a class="nav-item" href="inventory.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 9 6 3h12l3 6"/><path d="M9 13h6"/></svg><span>المخزون</span></a><a class="nav-item" href="accounts.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg><span>الحسابات والمالية</span></a><a class="nav-item" href="reports.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5m6 14v-7"/><path d="M3 19h18"/></svg><span>التقارير</span></a><a class="nav-item" href="complaints.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/><path d="M8 9h8M8 13h5"/></svg><span>الشكاوى</span></a><a class="nav-item" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9c.2.5.7.9 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg><span>الإعدادات</span></a></nav>
+  <div class="sidebar-foot">
+    <div class="current-branch">
+      <div class="cb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-5 6 5v12"/><path d="M10 21v-5h4v5"/></svg></div>
+      <div class="cb-text"><b>الفرع الحالي</b><span>الفرع الرئيسي</span></div>
+    </div>
+  </div>
+</aside>
+
+  <div class="main-col">
+    <div class="topbar">
+    <div class="topbar-filters">
+      <div class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-5 6 5v12"/><path d="M10 21v-5h4v5"/></svg><select><option>جميع الفروع</option><option>الفرع الرئيسي</option><option>فرع مدينة نصر</option><option>فرع الشيخ زايد</option><option>فرع أكتوبر</option><option>فرع المعادي</option><option>فرع الإسكندرية</option><option>فرع المنصورة</option><option>فرع طنطا</option><option>فرع الشرقية</option><option>فرع بورسعيد</option></select></div>
+      <div class="pill" id="dateRangePill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>من 2026-09-01 إلى 2026-09-30</span></div>
+      <div class="icon-btn" id="cartPill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.4 12.2a1.6 1.6 0 0 0 1.6 1.3h8.2a1.6 1.6 0 0 0 1.6-1.3L21 8H6"/></svg></div>
+    </div>
+    <div class="topbar-user">
+      <div class="icon-btn" id="expandBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></div>
+      <div class="icon-btn" id="bellBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span class="badge-count">3</span></div>
+      <div class="user-chip">
+        <div class="user-avatar">مم</div>
+        <div>
+          <div class="user-name">مصطفى محمود</div>
+          <div class="user-role">مدير الشركة</div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="page-body">
+      <div class="page-head">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg></div>
+        <div><h1>المنتجات والخدمات</h1><p>قائمة المنتجات المقدمة في كل الفروع وحساسيتها أثناء التوصيل</p></div>
+      </div>
+      <div class="kpi-row"><div class="kpi-card">
+    <div class="kpi-top">
+      <div class="kpi-icon" style="background:#182140;color:#4f7dff;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg></div>
+      
+    </div>
+    <div class="kpi-value">22</div>
+    <div class="kpi-label">إجمالي المنتجات</div>
+  </div><div class="kpi-card">
+    <div class="kpi-top">
+      <div class="kpi-icon" style="background:#16321f;color:#22c55e;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 6h6v6"/></svg></div>
+      
+    </div>
+    <div class="kpi-value">21</div>
+    <div class="kpi-label">منتجات متاحة</div>
+  </div><div class="kpi-card">
+    <div class="kpi-top">
+      <div class="kpi-icon" style="background:#3a1a1a;color:#f8695f;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M5.5 17.5 9 10h5l3 4.5"/><path d="M9 10 8 7H6"/><path d="M12 10l2 4.5h4.5"/></svg></div>
+      
+    </div>
+    <div class="kpi-value">12</div>
+    <div class="kpi-label">أصناف حساسة للبرودة أثناء التوصيل</div>
+  </div></div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-head"><h3>كل المنتجات والخدمات</h3>
+        <button class="btn btn-primary" id="addProductBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> إضافة منتج</button>
+      </div>
+      <div class="product-grid"><div class="product-card">
+          <div class="product-emoji">🍢</div>
+          <h4>وجبة مشاوي مشكل</h4>
+          <div class="p-price">320 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">مشاوي · أكثر مشكلة: وصل بارد</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍢</div>
+          <h4>كفتة مشوية (نص كيلو)</h4>
+          <div class="p-price">210 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">مشاوي · أكثر مشكلة: وصل بارد</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍢</div>
+          <h4>ريش ضاني</h4>
+          <div class="p-price">380 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">مشاوي · أكثر مشكلة: تأخير ساعة</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍢</div>
+          <h4>كباب حلة</h4>
+          <div class="p-price">260 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">مشاوي · أكثر مشكلة: وصل بارد</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍢</div>
+          <h4>شيش طاووق</h4>
+          <div class="p-price">240 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">مشاوي · أكثر مشكلة: كمية قليلة</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍗</div>
+          <h4>فراخ مشوية كاملة</h4>
+          <div class="p-price">290 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">دجاج · أكثر مشكلة: وصل بارد</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-red">غير متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍗</div>
+          <h4>بروست 8 قطع</h4>
+          <div class="p-price">220 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">دجاج · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍗</div>
+          <h4>فراخ بانيه</h4>
+          <div class="p-price">195 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">دجاج · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-green">لا يتأثر بالبرودة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🥪</div>
+          <h4>شاورما فراخ سندوتش</h4>
+          <div class="p-price">75 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">سندوتشات · أكثر مشكلة: وصل مثقوب</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🥪</div>
+          <h4>شاورما لحمة سندوتش</h4>
+          <div class="p-price">95 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">سندوتشات · أكثر مشكلة: وصل مثقوب</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🥪</div>
+          <h4>برجر لحمة مزدوج</h4>
+          <div class="p-price">130 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">سندوتشات · أكثر مشكلة: وصل بارد</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🥪</div>
+          <h4>هوت دوج</h4>
+          <div class="p-price">65 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">سندوتشات · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-green">لا يتأثر بالبرودة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍚</div>
+          <h4>أرز بالشعرية</h4>
+          <div class="p-price">35 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">أطباق جانبية · أكثر مشكلة: كمية قليلة</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍚</div>
+          <h4>بطاطس محمرة</h4>
+          <div class="p-price">55 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">أطباق جانبية · أكثر مشكلة: وصل بارد</div>
+          <div class="p-tags"><span class="badge badge-orange">يبرد بسرعة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍚</div>
+          <h4>سلطة خضراء</h4>
+          <div class="p-price">40 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">أطباق جانبية · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-green">لا يتأثر بالبرودة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍚</div>
+          <h4>خبز بلدي (5 أرغفة)</h4>
+          <div class="p-price">15 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">أطباق جانبية · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-green">لا يتأثر بالبرودة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍮</div>
+          <h4>تحلية أم علي</h4>
+          <div class="p-price">60 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">حلويات · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-green">لا يتأثر بالبرودة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🍮</div>
+          <h4>كنافة بالمكسرات</h4>
+          <div class="p-price">75 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">حلويات · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-green">لا يتأثر بالبرودة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🥤</div>
+          <h4>عصير مانجو طازج</h4>
+          <div class="p-price">35 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">مشروبات · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-green">لا يتأثر بالبرودة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🥤</div>
+          <h4>مشروب غازي</h4>
+          <div class="p-price">20 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">مشروبات · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-green">لا يتأثر بالبرودة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">🥤</div>
+          <h4>عصير ليمون بالنعناع</h4>
+          <div class="p-price">30 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">مشروبات · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-green">لا يتأثر بالبرودة</span><span class="badge badge-green">متاح</span></div>
+        </div><div class="product-card">
+          <div class="product-emoji">💨</div>
+          <h4>شيشة توفاحتين</h4>
+          <div class="p-price">90 EGP</div>
+          <div style="font-size:11px;color:var(--text-muted);">خدمات إضافية · أكثر مشكلة: لا يوجد</div>
+          <div class="p-tags"><span class="badge badge-green">لا يتأثر بالبرودة</span><span class="badge badge-green">متاح</span></div>
+        </div></div>
+    </div>
+    </div>
+  </div>
+</div>
+<script>
+    document.getElementById('addProductBtn').addEventListener('click', ()=>{
+      openModal({
+        title:'إضافة منتج جديد',
+        submitLabel:'إضافة المنتج',
+        fields:[
+          {name:'name', label:'اسم المنتج', placeholder:'مثال: بيتزا مشكل'},
+          {name:'category', label:'القسم', type:'select', options:['مشاوي','دجاج','سندوتشات','أطباق جانبية','حلويات','مشروبات','خدمات إضافية']},
+          {name:'price', label:'السعر (EGP)', placeholder:'مثال: 150'},
+          {name:'cold', label:'هل يتأثر بالبرودة أثناء التوصيل؟', type:'select', options:['نعم','لا']},
+        ],
+        onSubmit:(v)=>{
+          if(!v.name){ showToast('من فضلك أدخل اسم المنتج','error'); return; }
+          const grid = document.querySelector('.product-grid');
+          const div = document.createElement('div');
+          div.className = 'product-card row-enter';
+          const coldBadge = v.cold==='نعم' ? '<span class="badge badge-orange">يبرد بسرعة</span>' : '<span class="badge badge-green">لا يتأثر بالبرودة</span>';
+          div.innerHTML = `<div class="product-emoji">🍽️</div><h4>${v.name}</h4><div class="p-price">${v.price||0} EGP</div><div style="font-size:11px;color:var(--text-muted);">${v.category}</div><div class="p-tags">${coldBadge}<span class="badge badge-green">متاح</span></div>`;
+          grid.insertBefore(div, grid.firstChild);
+          showToast('تمت إضافة المنتج بنجاح', 'success');
+        }
+      });
+    });
+    </script>
+<script>
+document.getElementById('bellBtn')?.addEventListener('click', ()=> showToast('لديك 3 إشعارات جديدة: مخزون منخفض، شكوى جديدة، طلب متأخر', 'info'));
+document.getElementById('expandBtn')?.addEventListener('click', ()=>{
+  if(!document.fullscreenElement){ document.documentElement.requestFullscreen?.(); } else { document.exitFullscreen?.(); }
+});
+document.getElementById('dateRangePill')?.addEventListener('click', ()=> showToast('تم تطبيق فلترة التاريخ على البيانات المعروضة', 'success'));
+document.getElementById('cartPill')?.addEventListener('click', ()=> window.location.href='delivery-orders.html');
+document.querySelectorAll('.pill select').forEach(s=> s.addEventListener('change', ()=> showToast('تم تحديث البيانات لفرع: ' + s.value, 'success')));
+</script>
+<script src="assets/engine.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
