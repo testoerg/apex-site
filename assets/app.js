@@ -1,789 +1,389 @@
 /* ==========================================================================
    Apex — Branches Under Control
-   Front-end interactivity engine (no backend — persists via localStorage)
+   Design system stylesheet
    ========================================================================== */
-(function(){
-  "use strict";
 
-  const PAGE = document.body.dataset.page || "page";
-  const LS = "apexdb_";
+:root{
+  --blue:#2f6bff;        --blue-soft:#e7edff;
+  --green:#16a34a;       --green-soft:#e8f8ef;
+  --red:#e0392b;         --red-soft:#fdeceb;
+  --orange:#f39c1f;      --orange-soft:#fef2e0;
+  --purple:#7c5cff;      --purple-soft:#efebff;
+  --teal:#0fb5ae;        --teal-soft:#e2faf8;
+  --grey-soft:#eef0f4;
 
-  /* ------------------------------------------------------------------ *
-   *  Small storage helpers
-   * ------------------------------------------------------------------ */
-  function lsGet(key, fallback){
-    try{ const v = localStorage.getItem(LS+key); return v===null? fallback : JSON.parse(v); }
-    catch(e){ return fallback; }
-  }
-  function lsSet(key, val){
-    try{ localStorage.setItem(LS+key, JSON.stringify(val)); }catch(e){/* ignore quota errors */}
-  }
+  --bg:#f4f6fb;
+  --card-bg:#ffffff;
+  --card-border:#e9ecf5;
+  --text:#1c2333;
+  --text-dim:#5b6479;
+  --text-mute:#8891a8;
 
-  /* ------------------------------------------------------------------ *
-   *  Toasts
-   * ------------------------------------------------------------------ */
-  let toastStack;
-  function ensureToastStack(){
-    if(!toastStack){
-      toastStack = document.createElement("div");
-      toastStack.className = "toast-stack";
-      document.body.appendChild(toastStack);
-    }
-    return toastStack;
-  }
-  function toast(message, type){
-    const stack = ensureToastStack();
-    const el = document.createElement("div");
-    el.className = "toast" + (type ? " "+type : "");
-    el.innerHTML = '<span class="dot"></span><span>'+message+'</span>';
-    stack.appendChild(el);
-    setTimeout(()=>{
-      el.classList.add("leaving");
-      setTimeout(()=> el.remove(), 320);
-    }, 3200);
-  }
-  window.ApexToast = toast;
+  --shadow-sm:0 1px 2px rgba(30,40,80,.04), 0 1px 1px rgba(30,40,80,.03);
+  --shadow-md:0 8px 24px rgba(30,40,80,.08);
+  --shadow-lg:0 20px 48px rgba(30,40,80,.16);
 
-  /* ------------------------------------------------------------------ *
-   *  Ripple effect on interactive elements
-   * ------------------------------------------------------------------ */
-  function attachRipple(el){
-    el.addEventListener("click", function(e){
-      const rect = el.getBoundingClientRect();
-      const ripple = document.createElement("span");
-      const size = Math.max(rect.width, rect.height);
-      ripple.className = "ripple";
-      ripple.style.width = ripple.style.height = size+"px";
-      ripple.style.left = (e.clientX - rect.left - size/2)+"px";
-      ripple.style.top = (e.clientY - rect.top - size/2)+"px";
-      el.appendChild(ripple);
-      setTimeout(()=> ripple.remove(), 650);
-    });
-  }
-  function wireRipples(){
-    document.querySelectorAll(".btn, .nav-item, .icon-btn, .menu-tile").forEach(el=>{
-      if(el.dataset.rippleBound) return;
-      el.dataset.rippleBound = "1";
-      attachRipple(el);
-    });
-  }
+  --radius:14px;
+  --radius-sm:10px;
+  --sidebar-w:252px;
 
-  /* ------------------------------------------------------------------ *
-   *  Modal system
-   * ------------------------------------------------------------------ */
-  function openModal({title, bodyHTML, submitLabel, onSubmit}){
-    const overlay = document.createElement("div");
-    overlay.className = "modal-overlay";
-    overlay.innerHTML = `
-      <div class="modal-box">
-        <div class="modal-head"><h3>${title}</h3><button type="button" class="modal-close">&times;</button></div>
-        <form>
-          <div class="modal-body">${bodyHTML}</div>
-          <div class="modal-foot">
-            <button type="button" class="btn modal-cancel">إلغاء</button>
-            <button type="submit" class="btn btn-primary">${submitLabel || "حفظ"}</button>
-          </div>
-        </form>
-      </div>`;
-    document.body.appendChild(overlay);
-    wireRipples();
+  --ease:cubic-bezier(.22,1,.36,1);
+}
 
-    function close(){
-      overlay.classList.add("leaving");
-      setTimeout(()=> overlay.remove(), 220);
-    }
-    overlay.querySelector(".modal-close").addEventListener("click", close);
-    overlay.querySelector(".modal-cancel").addEventListener("click", close);
-    overlay.addEventListener("click", (e)=>{ if(e.target === overlay) close(); });
-    document.addEventListener("keydown", function esc(e){
-      if(e.key === "Escape"){ close(); document.removeEventListener("keydown", esc); }
-    });
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Cairo',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  font-size:14px;
+}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+input, select, textarea{font-family:inherit;}
+h1,h2,h3,p{margin:0;}
+::selection{background:rgba(47,107,255,.18);}
 
-    const form = overlay.querySelector("form");
-    form.addEventListener("submit", function(e){
-      e.preventDefault();
-      const data = {};
-      form.querySelectorAll("[data-field]").forEach(inp=>{ data[inp.dataset.field] = inp.value.trim(); });
-      const ok = onSubmit(data, close);
-      if(ok !== false) close();
-    });
+/* Scrollbar */
+::-webkit-scrollbar{width:9px;height:9px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#d3d9ea;border-radius:20px;}
+::-webkit-scrollbar-thumb:hover{background:#b9c2dc;}
 
-    const firstInput = overlay.querySelector("input, select, textarea");
-    if(firstInput) setTimeout(()=> firstInput.focus(), 80);
-    return overlay;
-  }
-  window.ApexModal = openModal;
+/* ============================= App shell ============================= */
+.app-shell{display:flex; min-height:100vh; align-items:stretch;}
 
-  function fieldHTML(label, field, opts){
-    opts = opts || {};
-    const req = opts.required===false ? "" : "required";
-    if(opts.select){
-      const options = opts.select.map(o=>`<option value="${o}">${o}</option>`).join("");
-      return `<div class="field"><label>${label}</label><select data-field="${field}" ${req}>${options}</select></div>`;
-    }
-    const type = opts.type || "text";
-    const val = opts.value!==undefined ? `value="${opts.value}"` : "";
-    return `<div class="field"><label>${label}</label><input type="${type}" data-field="${field}" placeholder="${opts.placeholder||''}" ${val} ${req}></div>`;
-  }
+.sidebar{
+  width:var(--sidebar-w);
+  min-width:var(--sidebar-w);
+  background:var(--card-bg);
+  border-inline-start:1px solid var(--card-border);
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  position:sticky;
+  top:0;
+  padding:18px 14px;
+  gap:14px;
+  transition:transform .35s var(--ease), width .35s var(--ease);
+  z-index:40;
+}
+.sidebar-brand{display:flex; align-items:center; gap:10px; padding:4px 6px 10px; border-bottom:1px solid var(--card-border);}
+.sidebar-brand img{width:34px;height:34px; animation:brandPop .6s var(--ease);}
+.brand-name{font-weight:800; font-size:16px; letter-spacing:.2px;}
+.brand-sub{font-size:10.5px; color:var(--text-mute); font-weight:600;}
 
-  /* ------------------------------------------------------------------ *
-   *  KPI delta engine — persists additions/removals across reloads
-   * ------------------------------------------------------------------ */
-  function ensureKpiBase(){
-    document.querySelectorAll(".kpi-value").forEach(el=>{
-      if(el.dataset.base === undefined) el.dataset.base = el.textContent.trim();
-    });
-  }
-  function parseNum(str){
-    const m = str.match(/^([\d,\.]+)(.*)$/);
-    if(!m) return null;
-    return { num: parseFloat(m[1].replace(/,/g,"")), suffix: m[2]||"", raw: m[1] };
-  }
-  function formatLike(num, raw){
-    if(raw.indexOf(",") > -1) return Math.round(num).toLocaleString("en-US");
-    if(raw.indexOf(".") > -1){ const d = raw.split(".")[1].length; return num.toFixed(d); }
-    return Math.round(num).toString();
-  }
-  function applyKpiDeltas(){
-    ensureKpiBase();
-    const deltas = lsGet(PAGE+"_kpi", {});
-    document.querySelectorAll(".kpi-value").forEach((el, i)=>{
-      const parsed = parseNum(el.dataset.base);
-      if(!parsed) return;
-      const d = deltas[i] || 0;
-      el.textContent = d===0 ? el.dataset.base : formatLike(parsed.num + d, parsed.raw) + parsed.suffix;
-    });
-  }
-  function bumpKpi(index, delta){
-    const deltas = lsGet(PAGE+"_kpi", {});
-    deltas[index] = (deltas[index]||0) + delta;
-    lsSet(PAGE+"_kpi", deltas);
-    applyKpiDeltas();
-    const card = document.querySelectorAll(".kpi-card")[index];
-    if(card){ card.classList.add("shake"); setTimeout(()=>card.classList.remove("shake"), 420); }
-  }
+.sidebar-search{
+  display:flex; align-items:center; gap:8px;
+  background:var(--bg); border:1px solid var(--card-border); border-radius:10px;
+  padding:9px 12px; color:var(--text-mute);
+  transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.sidebar-search:focus-within{border-color:var(--blue); box-shadow:0 0 0 3px rgba(47,107,255,.12);}
+.sidebar-search svg{width:15px;height:15px; flex-shrink:0;}
+.sidebar-search input{border:0; background:transparent; outline:0; width:100%; font-size:12.5px; color:var(--text);}
 
-  /* ------------------------------------------------------------------ *
-   *  Row persistence: remember dynamically added rows + removed seed rows
-   * ------------------------------------------------------------------ */
-  function tagSeedRows(){
-    document.querySelectorAll("tbody").forEach((tb, ti)=>{
-      [...tb.children].forEach((tr, ri)=>{
-        if(!tr.dataset.rowId) tr.dataset.rowId = "seed-"+ti+"-"+ri;
-      });
-    });
-  }
-  function hideRemovedRows(){
-    const removed = lsGet(PAGE+"_removed", []);
-    removed.forEach(id=>{
-      const tr = document.querySelector('tbody tr[data-row-id="'+CSS.escape(id)+'"]');
-      if(tr) tr.remove();
-    });
-  }
-  function markRemoved(id){
-    const removed = lsGet(PAGE+"_removed", []);
-    removed.push(id);
-    lsSet(PAGE+"_removed", removed);
-  }
-  function restoreAddedRows(tbodySelector, buildRow){
-    const tbody = document.querySelector(tbodySelector);
-    if(!tbody) return;
-    const rows = lsGet(PAGE+"_"+tbodySelector+"_rows", []);
-    rows.forEach(data=>{
-      tbody.insertAdjacentHTML("beforeend", buildRow(data));
-    });
-  }
-  function persistAddedRow(tbodySelector, data){
-    const key = PAGE+"_"+tbodySelector+"_rows";
-    const rows = lsGet(key, []);
-    rows.push(data);
-    lsSet(key, rows);
-  }
-  function addRow(tbodySelector, html, data){
-    const tbody = document.querySelector(tbodySelector);
-    if(!tbody) return;
-    tbody.insertAdjacentHTML("afterbegin", html);
-    const tr = tbody.firstElementChild;
-    tr.classList.add("row-enter");
-    tr.dataset.rowId = "added-"+Date.now()+"-"+Math.round(Math.random()*9999);
-    if(data) persistAddedRow(tbodySelector, data);
-  }
+.sidebar-nav{display:flex; flex-direction:column; gap:2px; overflow-y:auto; flex:1; padding-inline-end:2px;}
+.nav-item{
+  display:flex; align-items:center; gap:11px;
+  padding:9.5px 10px; border-radius:10px;
+  color:var(--text-dim); font-size:12.8px; font-weight:600;
+  position:relative; overflow:hidden;
+  transition:background .18s var(--ease), color .18s var(--ease), transform .15s var(--ease);
+}
+.nav-item svg{width:17px;height:17px; flex-shrink:0; transition:transform .25s var(--ease);}
+.nav-item:hover{background:var(--bg); color:var(--text); transform:translateX(-2px);}
+[dir="rtl"] .nav-item:hover{transform:translateX(2px);}
+.nav-item:hover svg{transform:scale(1.1);}
+.nav-item.active{background:linear-gradient(135deg,var(--blue),#2557d6); color:#fff; box-shadow:0 6px 16px rgba(47,107,255,.28);}
+.nav-item.active svg{filter:drop-shadow(0 1px 1px rgba(0,0,0,.15));}
+.nav-item:active{transform:scale(.97);}
 
-  /* ------------------------------------------------------------------ *
-   *  Row actions (view / edit / delete) — generic, works on any table
-   * ------------------------------------------------------------------ */
-  function wireRowActions(){
-    document.querySelectorAll(".row-actions").forEach(group=>{
-      if(group.dataset.bound) return;
-      group.dataset.bound = "1";
-      const icons = group.querySelectorAll(".icon-btn");
-      const tr = group.closest("tr");
-      if(icons[0]) icons[0].addEventListener("click", ()=>{
-        const cells = [...tr.children].slice(0,-1).map(td=>td.textContent.trim()).filter(Boolean);
-        toast("عرض: " + cells.slice(0,2).join(" — "), "info");
-      });
-      if(icons[1]) icons[1].addEventListener("click", ()=>{
-        toast("فتح نموذج التعديل...", "info");
-      });
-      if(icons[2]) icons[2].addEventListener("click", ()=>{
-        if(!confirm("هل أنت متأكد من الحذف؟ لا يمكن التراجع عن هذا الإجراء.")) return;
-        tr.classList.add("row-exit");
-        markRemoved(tr.dataset.rowId);
-        setTimeout(()=> tr.remove(), 350);
-        toast("تم الحذف بنجاح", "success");
-      });
-    });
-  }
+.sidebar-foot{font-size:10px; color:var(--text-mute); text-align:center; padding-top:8px; border-top:1px solid var(--card-border);}
 
-  /* ------------------------------------------------------------------ *
-   *  Search filtering (sidebar nav + tables)
-   * ------------------------------------------------------------------ */
-  function wireSearchInputs(){
-    document.querySelectorAll("input").forEach(inp=>{
-      const ph = inp.getAttribute("placeholder") || "";
-      if(!ph.includes("بحث")) return;
-      if(inp.dataset.searchBound) return;
-      inp.dataset.searchBound = "1";
+/* ============================== Main col ============================== */
+.main-col{flex:1; min-width:0; display:flex; flex-direction:column;}
 
-      if(inp.closest(".sidebar-search")){
-        inp.addEventListener("input", ()=>{
-          const term = inp.value.trim().toLowerCase();
-          document.querySelectorAll(".nav-item").forEach(item=>{
-            const txt = item.textContent.trim().toLowerCase();
-            item.style.display = (term === "" || txt.includes(term)) ? "" : "none";
-          });
-        });
-        return;
-      }
-      inp.addEventListener("input", ()=>{
-        const term = inp.value.trim().toLowerCase();
-        const scope = inp.closest(".card") || document.querySelector(".page-body");
-        if(!scope) return;
-        scope.querySelectorAll("tbody tr").forEach(tr=>{
-          const text = tr.textContent.toLowerCase();
-          tr.style.display = (term === "" || text.includes(term)) ? "" : "none";
-        });
-      });
-    });
-  }
+.topbar{
+  display:flex; align-items:center; gap:16px;
+  padding:14px 26px; background:rgba(244,246,251,.85);
+  backdrop-filter:blur(10px);
+  position:sticky; top:0; z-index:30;
+  border-bottom:1px solid var(--card-border);
+}
+.topbar-search{
+  flex:1; max-width:420px; display:flex; align-items:center; gap:9px;
+  background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px;
+  padding:9px 14px; color:var(--text-mute);
+  transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.topbar-search:focus-within{border-color:var(--blue); box-shadow:0 0 0 3px rgba(47,107,255,.12);}
+.topbar-search svg{width:15px;height:15px;flex-shrink:0;}
+.topbar-search input{border:0; outline:0; background:transparent; width:100%; font-size:12.8px; color:var(--text);}
 
-  /* ------------------------------------------------------------------ *
-   *  Topbar: live date + functional bell/gear icons + unread dot
-   * ------------------------------------------------------------------ */
-  const AR_DAYS = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
-  const AR_MONTHS = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
-  function setLiveDate(){
-    const now = new Date();
-    const str = AR_DAYS[now.getDay()] + " " + now.getDate() + " " + AR_MONTHS[now.getMonth()] + " " + now.getFullYear();
-    document.querySelectorAll(".topbar-date").forEach(el=> el.textContent = str);
-  }
-  function wireTopbarIcons(){
-    document.querySelectorAll(".topbar-right .icon-btn").forEach(btn=>{
-      if(btn.dataset.bound) return;
-      const svgHtml = btn.innerHTML;
-      if(svgHtml.includes("M6 8a6 6 0 0 1 12 0")){ // bell
-        btn.dataset.bound = "1";
-        btn.style.cursor = "pointer";
-        btn.addEventListener("click", ()=>{
-          if(PAGE !== "notifications") window.location.href = "notifications.html";
-        });
-      } else if(svgHtml.includes("M19.4 15")){ // gear
-        btn.dataset.bound = "1";
-        btn.style.cursor = "pointer";
-        btn.addEventListener("click", ()=>{
-          if(PAGE !== "settings") window.location.href = "settings.html";
-        });
-      }
-    });
-    // unread dot synced across pages via localStorage
-    const totalNotifs = 8;
-    const readCount = lsGet("notifs_read_count", 0);
-    const bell = [...document.querySelectorAll(".topbar-right .icon-btn")].find(b=> b.innerHTML.includes("M6 8a6 6 0 0 1 12 0"));
-    if(bell){
-      if(readCount < totalNotifs) bell.classList.add("has-dot");
-      else bell.classList.remove("has-dot");
-    }
-  }
+.topbar-right{display:flex; align-items:center; gap:10px; margin-inline-start:auto;}
+.topbar-date{font-size:12px; color:var(--text-mute); font-weight:600; white-space:nowrap;}
 
-  /* ------------------------------------------------------------------ *
-   *  Login page — splash + redirect
-   * ------------------------------------------------------------------ */
-  function initLoginPage(){
-    const form = document.getElementById("loginForm");
-    const googleBtn = document.getElementById("googleLoginBtn");
-    const forgot = document.getElementById("forgotPassLink");
+.icon-btn{
+  width:38px;height:38px; border-radius:10px; border:1px solid var(--card-border);
+  background:var(--card-bg); display:flex; align-items:center; justify-content:center;
+  color:var(--text-dim); position:relative; flex-shrink:0;
+  transition:transform .18s var(--ease), box-shadow .18s var(--ease), color .18s var(--ease), border-color .18s var(--ease);
+}
+.icon-btn svg{width:17px;height:17px;}
+.icon-btn:hover{transform:translateY(-2px); box-shadow:var(--shadow-md); color:var(--blue); border-color:#d7e2ff;}
+.icon-btn:active{transform:translateY(0) scale(.94);}
+.icon-btn.has-dot::after{
+  content:''; position:absolute; top:7px; inset-inline-end:7px;
+  width:7px;height:7px;border-radius:50%; background:var(--red); border:2px solid var(--card-bg);
+}
 
-    function runSplash(){
-      const splash = document.createElement("div");
-      splash.className = "boot-splash";
-      splash.innerHTML = `
-        <div class="boot-logo"><img src="assets/logo.svg" alt="Apex"></div>
-        <h2>Apex</h2>
-        <p>جاري تجهيز لوحة تحكم إدارة الموقع...</p>
-        <div class="boot-bar"><span></span></div>`;
-      document.body.appendChild(splash);
-      setTimeout(()=>{
-        splash.classList.add("leaving");
-        setTimeout(()=>{ window.location.href = "dashboard.html"; }, 420);
-      }, 1900);
-    }
+.user-chip{display:flex; align-items:center; gap:9px; padding:5px 10px 5px 5px; border-radius:12px; cursor:pointer; transition:background .18s var(--ease);}
+.user-chip:hover{background:var(--card-bg); box-shadow:var(--shadow-sm);}
+.user-avatar{
+  width:36px;height:36px;border-radius:50%; background:linear-gradient(135deg,var(--blue),var(--purple));
+  color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px;
+  flex-shrink:0;
+}
+.user-name{font-size:12.5px; font-weight:700;}
+.user-role{font-size:10.5px; color:var(--text-mute);}
 
-    if(form) form.addEventListener("submit", function(e){
-      e.preventDefault();
-      const btn = document.getElementById("loginSubmitBtn");
-      btn.disabled = true;
-      btn.textContent = "جاري التحقق...";
-      setTimeout(runSplash, 450);
-    });
-    if(googleBtn) googleBtn.addEventListener("click", runSplash);
-    if(forgot) forgot.addEventListener("click", function(e){
-      e.preventDefault();
-      toast("تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني (تجريبي)", "info");
-    });
-  }
+.page-body{padding:22px 26px 60px; animation:pageIn .45s var(--ease);}
+.page-head{margin-bottom:18px;}
+.page-head h1{font-size:21px; font-weight:800;}
+.page-head p{font-size:12.5px; color:var(--text-mute); margin-top:4px;}
 
-  /* ------------------------------------------------------------------ *
-   *  Per-page wiring
-   * ------------------------------------------------------------------ */
-  function findButtonByText(text, root){
-    root = root || document;
-    return [...root.querySelectorAll("button")].find(b=> b.textContent.trim().includes(text));
-  }
+/* ================================ Grids ================================ */
+.kpi-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin-bottom:18px;}
+.grid-2{display:grid; grid-template-columns:1.3fr 1fr; gap:16px;}
+.grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; align-items:stretch;}
+@media (max-width:980px){ .grid-2, .grid-3{grid-template-columns:1fr;} }
 
-  function initBranches(){
-    const tbodySel = ".grid-2 .card:first-child tbody";
-    restoreAddedRows(tbodySel, d=> branchRowHTML(d));
-    function branchRowHTML(d){
-      const badgeClass = d.status === "نشط" ? "badge-green" : (d.status === "متوقف" ? "badge-red" : "badge-orange");
-      return `<tr><td>${d.name}</td><td>${d.address}</td><td>${d.phone}</td><td>${d.manager}</td>
-        <td><span class="badge ${badgeClass}">${d.status}</span></td>
-        <td><div class="row-actions">
-          <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>
-          <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
-          <span class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2m1 0-.8 12.2A2 2 0 0 1 16.2 21H7.8a2 2 0 0 1-2-1.8L5 7"/></svg></span>
-        </div></td></tr>`;
-    }
-    const btn = findButtonByText("إضافة فرع جديد");
-    if(btn) btn.addEventListener("click", ()=>{
-      openModal({
-        title: "إضافة فرع جديد",
-        submitLabel: "إضافة الفرع",
-        bodyHTML: fieldHTML("اسم الفرع","name",{placeholder:"مثال: فرع دمياط"}) +
-                  fieldHTML("العنوان","address",{placeholder:"العنوان بالتفصيل"}) +
-                  fieldHTML("رقم الهاتف","phone",{placeholder:"01000000000"}) +
-                  fieldHTML("مدير الفرع","manager",{placeholder:"اسم المدير"}) +
-                  fieldHTML("الحالة","status",{select:["نشط","تحت المراجعة","متوقف"]}),
-        onSubmit(data){
-          addRow(tbodySel, branchRowHTML(data), data);
-          bumpKpi(0, 1);
-          if(data.status === "نشط") bumpKpi(1, 1);
-          else if(data.status === "تحت المراجعة") bumpKpi(2, 1);
-          toast("تم إضافة الفرع بنجاح", "success");
-        }
-      });
-    });
-  }
+/* ================================ Cards ================================ */
+.card, .kpi-card{
+  background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius);
+  padding:18px; box-shadow:var(--shadow-sm);
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+  animation:cardIn .5s var(--ease) both;
+}
+.card:hover, .kpi-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:#dfe4f3;}
+.card-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;}
+.card-head h3{font-size:14.5px; font-weight:800;}
+.muted{font-size:11.5px; color:var(--text-mute); font-weight:600;}
 
-  function initInventory(){
-    const tbodySel = ".grid-2 .card:first-child tbody";
-    function invRowHTML(d){
-      const low = d.status === "منخفض";
-      return `<tr><td>${d.name}</td><td>${d.branch}</td><td>${d.qty}</td><td>${d.min}</td>
-        <td><span class="badge ${low?'badge-red':'badge-green'}">${d.status}</span></td></tr>`;
-    }
-    restoreAddedRows(tbodySel, invRowHTML);
-    const btn = findButtonByText("إضافة صنف");
-    if(btn) btn.addEventListener("click", ()=>{
-      openModal({
-        title: "إضافة صنف للمخزون",
-        submitLabel: "إضافة الصنف",
-        bodyHTML: fieldHTML("اسم الصنف","name",{placeholder:"مثال: أرز أبيض"}) +
-                  fieldHTML("الفرع","branch",{placeholder:"مثال: فرع القاهرة"}) +
-                  fieldHTML("الكمية الحالية","qty",{placeholder:"مثال: 25 كجم"}) +
-                  fieldHTML("الحد الأدنى","min",{placeholder:"مثال: 15 كجم"}),
-        onSubmit(data){
-          const qtyNum = parseFloat(data.qty) || 0;
-          const minNum = parseFloat(data.min) || 0;
-          data.status = qtyNum < minNum ? "منخفض" : "متوفر";
-          addRow(tbodySel, invRowHTML(data), data);
-          if(data.status === "منخفض") bumpKpi(1, 1);
-          toast("تم إضافة الصنف بنجاح", "success");
-        }
-      });
-    });
-  }
+.kpi-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
+.kpi-icon{width:42px;height:42px;border-radius:12px; display:flex; align-items:center; justify-content:center;}
+.kpi-icon svg{width:20px;height:20px;}
+.kpi-value{font-size:21px; font-weight:800; letter-spacing:.2px;}
+.kpi-label{font-size:12px; color:var(--text-mute); margin-top:3px; font-weight:600;}
+.kpi-trend{font-size:11px; font-weight:800; padding:3px 8px; border-radius:20px;}
+.trend-up{color:var(--green); background:var(--green-soft);}
+.trend-down{color:var(--red); background:var(--red-soft);}
 
-  function initHR(){
-    const tbodySel = ".grid-2 .card:first-child tbody";
-    function hrRowHTML(d){
-      return `<tr><td>${d.name}</td><td>${d.job}</td><td>${d.branch}</td><td>${d.phone}</td><td>${d.date}</td>
-        <td><span class="badge badge-green">نشط</span></td></tr>`;
-    }
-    restoreAddedRows(tbodySel, hrRowHTML);
-    const btn = findButtonByText("إضافة موظف");
-    if(btn) btn.addEventListener("click", ()=>{
-      const today = new Date().toISOString().slice(0,10);
-      openModal({
-        title: "إضافة موظف جديد",
-        submitLabel: "إضافة الموظف",
-        bodyHTML: fieldHTML("اسم الموظف","name",{placeholder:"الاسم بالكامل"}) +
-                  fieldHTML("الوظيفة","job",{placeholder:"مثال: كاشير"}) +
-                  fieldHTML("الفرع","branch",{placeholder:"مثال: فرع الجيزة"}) +
-                  fieldHTML("رقم الهاتف","phone",{placeholder:"01000000000"}) +
-                  fieldHTML("تاريخ التعيين","date",{type:"date", value: today}),
-        onSubmit(data){
-          addRow(tbodySel, hrRowHTML(data), data);
-          bumpKpi(2, 1);
-          toast("تم إضافة الموظف بنجاح", "success");
-        }
-      });
-    });
-  }
+.legend-dot{display:inline-block; width:8px;height:8px;border-radius:50%; margin-inline-end:6px;}
 
-  function initSuppliers(){
-    const tbodySel = ".grid-2 .card:first-child tbody";
-    function supRowHTML(d){
-      return `<tr><td>${d.supplier}</td><td>${d.items}</td><td>${d.phone}</td><td>${d.date}</td><td>${d.value} EGP</td>
-        <td><span class="badge badge-orange">قيد الشحن</span></td></tr>`;
-    }
-    restoreAddedRows(tbodySel, supRowHTML);
-    const btn = findButtonByText("طلب شراء جديد");
-    if(btn) btn.addEventListener("click", ()=>{
-      const today = new Date().toISOString().slice(0,10);
-      openModal({
-        title: "طلب شراء جديد",
-        submitLabel: "إرسال الطلب",
-        bodyHTML: fieldHTML("اسم المورد","supplier",{placeholder:"مثال: مؤسسة الفا للحوم"}) +
-                  fieldHTML("المنتجات","items",{placeholder:"مثال: لحوم وفراخ"}) +
-                  fieldHTML("رقم الهاتف","phone",{placeholder:"01000000000"}) +
-                  fieldHTML("تاريخ الطلب","date",{type:"date", value: today}) +
-                  fieldHTML("القيمة (EGP)","value",{placeholder:"مثال: 10000", type:"number"}),
-        onSubmit(data){
-          addRow(tbodySel, supRowHTML(data), data);
-          bumpKpi(2, 1);
-          toast("تم إرسال طلب الشراء للمورد", "success");
-        }
-      });
-    });
-  }
+/* ================================ Buttons ================================ */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  padding:9.5px 16px; border-radius:10px; border:1px solid var(--card-border);
+  background:var(--card-bg); color:var(--text); font-size:12.8px; font-weight:700;
+  position:relative; overflow:hidden; isolation:isolate;
+  transition:transform .16s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+  white-space:nowrap;
+}
+.btn svg{width:15px;height:15px;}
+.btn:hover{transform:translateY(-2px); box-shadow:var(--shadow-md);}
+.btn:active{transform:translateY(0) scale(.96);}
+.btn-primary{background:linear-gradient(135deg,var(--blue),#2557d6); border-color:transparent; color:#fff; box-shadow:0 6px 16px rgba(47,107,255,.28);}
+.btn-primary:hover{box-shadow:0 10px 22px rgba(47,107,255,.38);}
+.btn-soft{background:var(--blue-soft); border-color:transparent; color:var(--blue);}
+.btn-soft:hover{background:#dbe6ff;}
+.btn-danger{background:var(--red-soft); border-color:transparent; color:var(--red);}
+.btn-danger:hover{background:#fadbd8;}
+.btn-block{width:100%;}
+.btn-google{background:#fff; gap:10px;}
+.btn:disabled{opacity:.55; cursor:not-allowed; transform:none !important; box-shadow:none !important;}
 
-  function initCustomers(){
-    const tbodySel = ".grid-2 .card:first-child tbody";
-    function custRowHTML(d){
-      return `<tr><td>${d.name}</td><td>${d.phone}</td><td>${d.branch}</td><td>0 طلبات</td><td>0 EGP</td></tr>`;
-    }
-    restoreAddedRows(tbodySel, custRowHTML);
-    const btn = findButtonByText("إضافة عميل");
-    if(btn) btn.addEventListener("click", ()=>{
-      openModal({
-        title: "إضافة عميل جديد",
-        submitLabel: "إضافة العميل",
-        bodyHTML: fieldHTML("اسم العميل","name",{placeholder:"الاسم بالكامل"}) +
-                  fieldHTML("رقم الهاتف","phone",{placeholder:"01000000000"}) +
-                  fieldHTML("الفرع المعتاد","branch",{placeholder:"مثال: فرع القاهرة"}),
-        onSubmit(data){
-          addRow(tbodySel, custRowHTML(data), data);
-          bumpKpi(0, 1);
-          toast("تم إضافة العميل بنجاح", "success");
-        }
-      });
-    });
-  }
+/* Ripple */
+.btn .ripple, .nav-item .ripple, .icon-btn .ripple, .menu-tile .ripple{
+  position:absolute; border-radius:50%; transform:scale(0); pointer-events:none;
+  background:rgba(255,255,255,.55); animation:rippleAnim .6s ease-out forwards;
+  z-index:0;
+}
+.btn-soft .ripple, .icon-btn .ripple{background:rgba(47,107,255,.25);}
+.nav-item .ripple{background:rgba(47,107,255,.18);}
+@keyframes rippleAnim{ to{ transform:scale(3.2); opacity:0; } }
 
-  function initComplaints(){
-    const tbodySel = ".grid-2 .card:first-child tbody";
-    function compRowHTML(d){
-      return `<tr><td>${d.order}</td><td>${d.type}</td><td>${d.branch}</td><td>${d.date}</td>
-        <td><span class="badge badge-orange">جديدة</span></td></tr>`;
-    }
-    restoreAddedRows(tbodySel, compRowHTML);
-    const btn = findButtonByText("تسجيل شكوى");
-    if(btn) btn.addEventListener("click", ()=>{
-      const today = new Date().toISOString().slice(0,10);
-      openModal({
-        title: "تسجيل شكوى جديدة",
-        submitLabel: "تسجيل الشكوى",
-        bodyHTML: fieldHTML("رقم الطلب","order",{placeholder:"مثال: #ORD-1030"}) +
-                  fieldHTML("نوع الشكوى","type",{select:["تأخير الطلب","العلبة مثقوبة","وصل بارد","جسم غريب","سلوك من الطيار","نقص في الطلب","طعم غير مطابق","العبوة مكسورة","أخرى"]}) +
-                  fieldHTML("الفرع","branch",{placeholder:"مثال: فرع القاهرة"}) +
-                  fieldHTML("التاريخ","date",{type:"date", value: today}),
-        onSubmit(data){
-          addRow(tbodySel, compRowHTML(data), data);
-          bumpKpi(0, 1); // قيد المراجعة
-          bumpKpi(2, 1); // إجمالي الشكاوى
-          toast("تم تسجيل الشكوى وسيتم متابعتها", "success");
-        }
-      });
-    });
-  }
+/* ================================ Forms ================================ */
+.field{margin-bottom:13px; display:flex; flex-direction:column; gap:6px;}
+.field label{font-size:11.8px; font-weight:700; color:var(--text-dim);}
+.field input, .field select, .field textarea{
+  border:1px solid var(--card-border); border-radius:10px; padding:10px 12px;
+  font-size:13px; background:var(--bg); color:var(--text); outline:0; width:100%;
+  transition:border-color .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+}
+.field input:focus, .field select:focus, .field textarea:focus{
+  border-color:var(--blue); background:#fff; box-shadow:0 0 0 3px rgba(47,107,255,.12);
+}
+.field textarea{resize:vertical; min-height:80px;}
+.form-row-between{display:flex; align-items:center; justify-content:space-between; margin:6px 0 16px; font-size:12px;}
+.form-row-between a{color:var(--blue); font-weight:700;}
+.divider{display:flex; align-items:center; gap:10px; font-size:11px; color:var(--text-mute); margin:16px 0;}
+.divider::before, .divider::after{content:''; flex:1; height:1px; background:var(--card-border);}
 
-  function initMaintenance(){
-    const tbodySel = ".card:last-child tbody";
-    function maintRowHTML(d){
-      return `<tr><td>${d.device}</td><td>${d.branch}</td><td>${d.priority}</td><td>${d.tech||'-'}</td>
-        <td><span class="badge badge-blue">جديدة</span></td></tr>`;
-    }
-    restoreAddedRows(tbodySel, maintRowHTML);
-    const btn = findButtonByText("تسجيل عطل");
-    if(btn) btn.addEventListener("click", ()=>{
-      openModal({
-        title: "تسجيل عطل جديد",
-        submitLabel: "تسجيل العطل",
-        bodyHTML: fieldHTML("الجهاز / المعدة","device",{placeholder:"مثال: ثلاجة المطبخ"}) +
-                  fieldHTML("الفرع","branch",{placeholder:"مثال: فرع القاهرة"}) +
-                  fieldHTML("الأولوية","priority",{select:["عالية","متوسطة","منخفضة"]}) +
-                  fieldHTML("الفني المسؤول","tech",{placeholder:"اختياري", required:false}),
-        onSubmit(data){
-          addRow(tbodySel, maintRowHTML(data), data);
-          bumpKpi(0, 1);
-          toast("تم تسجيل العطل وسيتم توزيعه على الفني المناسب", "success");
-        }
-      });
-    });
-  }
+/* ================================ Tables ================================ */
+.table-wrap{overflow-x:auto; border-radius:12px;}
+table{width:100%; border-collapse:collapse; font-size:12.6px; min-width:560px;}
+thead th{
+  text-align:start; padding:11px 12px; color:var(--text-mute); font-weight:700;
+  font-size:11.5px; border-bottom:1px solid var(--card-border); white-space:nowrap;
+}
+tbody td{padding:12px; border-bottom:1px solid var(--card-border); vertical-align:middle;}
+tbody tr{transition:background .18s var(--ease);}
+tbody tr:hover{background:var(--bg);}
+tbody tr:last-child td{border-bottom:0;}
+tbody tr.row-enter{animation:rowIn .45s var(--ease);}
+tbody tr.row-exit{animation:rowOut .35s var(--ease) forwards;}
 
-  function initMarketing(){
-    function offerRowHTML(d){
-      return `<tr><td>${d.name}</td><td>${d.branches}</td><td>${d.from}</td><td>${d.to}</td><td>0 طلب</td>
-        <td><span class="badge badge-green">نشط</span></td></tr>`;
-    }
-    const tables = document.querySelectorAll("table tbody");
-    const offersTbody = tables[tables.length-1];
-    const offersSelKey = "offers_tbody";
-    if(offersTbody){
-      const rows = lsGet(PAGE+"_"+offersSelKey+"_rows", []);
-      rows.forEach(d=> offersTbody.insertAdjacentHTML("beforeend", offerRowHTML(d)));
-    }
-    const btn = findButtonByText("إضافة عرض");
-    if(btn) btn.addEventListener("click", ()=>{
-      const today = new Date().toISOString().slice(0,10);
-      openModal({
-        title: "إضافة عرض جديد",
-        submitLabel: "إضافة العرض",
-        bodyHTML: fieldHTML("اسم العرض","name",{placeholder:"مثال: خصم 15% على البيتزا"}) +
-                  fieldHTML("الفروع","branches",{placeholder:"مثال: كل الفروع"}) +
-                  fieldHTML("من تاريخ","from",{type:"date", value: today}) +
-                  fieldHTML("إلى تاريخ","to",{type:"date"}),
-        onSubmit(data){
-          if(offersTbody) offersTbody.insertAdjacentHTML("afterbegin", offerRowHTML(data));
-          const rows = lsGet(PAGE+"_"+offersSelKey+"_rows", []);
-          rows.push(data);
-          lsSet(PAGE+"_"+offersSelKey+"_rows", rows);
-          bumpKpi(0, 1);
-          toast("تم إضافة العرض وتفعيله", "success");
-        }
-      });
-    });
-    const activateBtn = findButtonByText("تفعيل العرض");
-    if(activateBtn) activateBtn.addEventListener("click", ()=>{
-      activateBtn.textContent = "تم التفعيل ✓";
-      activateBtn.disabled = true;
-      toast("تم تفعيل العرض على كل الفروع", "success");
-    });
-  }
+.row-actions{display:flex; align-items:center; gap:6px;}
+.row-actions .icon-btn{width:30px;height:30px; border-radius:8px;}
+.row-actions .icon-btn svg{width:14px;height:14px;}
 
-  function initSettings(){
-    // Persist free-text fields by their label text
-    document.querySelectorAll(".field").forEach(field=>{
-      const label = field.querySelector("label");
-      const input = field.querySelector("input");
-      if(!label || !input) return;
-      const key = "settings_"+label.textContent.trim();
-      const saved = lsGet(key, null);
-      if(saved !== null) input.value = saved;
-    });
-    document.querySelectorAll(".card .btn-primary").forEach(btn=>{
-      if(!btn.textContent.includes("حفظ التغييرات")) return;
-      btn.addEventListener("click", ()=>{
-        const card = btn.closest(".card");
-        const original = btn.innerHTML;
-        btn.disabled = true;
-        btn.textContent = "جاري الحفظ...";
-        setTimeout(()=>{
-          card.querySelectorAll(".field").forEach(field=>{
-            const label = field.querySelector("label");
-            const input = field.querySelector("input");
-            if(label && input) lsSet("settings_"+label.textContent.trim(), input.value);
-          });
-          btn.disabled = false;
-          btn.innerHTML = original;
-          toast("تم حفظ التغييرات بنجاح", "success");
-        }, 600);
-      });
-    });
-    // Add-user modal
-    const tbody = document.querySelector(".table-wrap table tbody");
-    function userRowHTML(d){
-      return `<tr><td>${d.name}</td><td>${d.email}</td><td>${d.role}</td><td><span class="badge badge-green">نشط</span></td></tr>`;
-    }
-    if(tbody) restoreAddedRows(".table-wrap table tbody", userRowHTML);
-    const addUserBtn = findButtonByText("إضافة مستخدم");
-    if(addUserBtn) addUserBtn.addEventListener("click", ()=>{
-      openModal({
-        title: "إضافة مستخدم جديد",
-        submitLabel: "إضافة المستخدم",
-        bodyHTML: fieldHTML("الاسم","name",{placeholder:"الاسم بالكامل"}) +
-                  fieldHTML("البريد الإلكتروني","email",{type:"email", placeholder:"user@apex-system.com"}) +
-                  fieldHTML("الدور","role",{select:["مدير عام","مدير فرع","كاشير","موظف مخزن"]}),
-        onSubmit(data){
-          addRow(".table-wrap table tbody", userRowHTML(data), data);
-          toast("تم إضافة المستخدم بنجاح", "success");
-        }
-      });
-    });
-  }
+/* ================================ Badges ================================ */
+.badge{display:inline-flex; align-items:center; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:800;}
+.badge-green{background:var(--green-soft); color:var(--green);}
+.badge-red{background:var(--red-soft); color:var(--red);}
+.badge-orange{background:var(--orange-soft); color:var(--orange);}
+.badge-blue{background:var(--blue-soft); color:var(--blue);}
+.badge-purple{background:var(--purple-soft); color:var(--purple);}
+.badge-teal{background:var(--teal-soft); color:var(--teal);}
 
-  function initPermissions(){
-    document.querySelectorAll(".card").forEach(card=>{
-      const title = card.querySelector("h3");
-      if(!title) return;
-      const roleKey = "perm_"+title.textContent.trim();
-      const boxes = card.querySelectorAll('input[type="checkbox"]');
-      const saved = lsGet(roleKey, null);
-      if(saved){
-        boxes.forEach((b,i)=>{ if(saved[i] !== undefined) b.checked = saved[i]; });
-      }
-      const saveBtn = [...card.querySelectorAll("button")].find(b=> b.textContent.includes("حفظ الصلاحيات"));
-      if(saveBtn) saveBtn.addEventListener("click", ()=>{
-        const state = [...boxes].map(b=> b.checked);
-        lsSet(roleKey, state);
-        const original = saveBtn.innerHTML;
-        saveBtn.innerHTML = "تم الحفظ ✓";
-        setTimeout(()=> saveBtn.innerHTML = original, 1500);
-        toast('تم حفظ صلاحيات دور "'+title.textContent.trim()+'"', "success");
-      });
-    });
-  }
+/* ================================ Menu grid ================================ */
+.menu-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px;}
+.menu-tile{
+  background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius);
+  padding:22px 14px; display:flex; flex-direction:column; align-items:center; gap:12px;
+  text-align:center; font-weight:700; font-size:12.8px; position:relative; overflow:hidden;
+  transition:transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease);
+  animation:cardIn .5s var(--ease) both;
+}
+.menu-tile:hover{transform:translateY(-5px) scale(1.02); box-shadow:var(--shadow-md); border-color:#dfe4f3;}
+.menu-tile:active{transform:translateY(-1px) scale(.98);}
+.tile-icon{width:52px;height:52px;border-radius:14px; display:flex; align-items:center; justify-content:center; transition:transform .3s var(--ease);}
+.tile-icon svg{width:24px;height:24px;}
+.menu-tile:hover .tile-icon{transform:rotate(-8deg) scale(1.08);}
 
-  function initNotifications(){
-    const card = document.querySelector(".page-body .card");
-    const notifItems = card ? [...card.children].filter(c=> c.tagName === "DIV" && !c.classList.contains("card-head")) : [];
-    const readState = lsGet("notifs_read", []);
-    notifItems.forEach((item, i)=>{
-      if(readState[i]) item.classList.add("is-read");
-      const viewBtn = item.querySelector("button");
-      if(viewBtn) viewBtn.addEventListener("click", ()=>{
-        const titleEl = item.querySelector('div[style*="font-weight:700"]');
-        const title = (titleEl ? titleEl.textContent : item.textContent).trim();
-        readState[i] = true;
-        lsSet("notifs_read", readState);
-        item.classList.add("is-read");
-        lsSet("notifs_read_count", readState.filter(Boolean).length);
-        wireTopbarIcons();
-        let target = null;
-        if(title.includes("شكوى")) target = "complaints.html";
-        else if(title.includes("عطل")) target = "maintenance.html";
-        else if(title.includes("طلب") && title.includes("#")) target = "orders.html";
-        else if(title.includes("مخزون")) target = "inventory.html";
-        else if(title.includes("مبيعات")) target = "sales.html";
-        else if(title.includes("مورد") || title.includes("شراء")) target = "suppliers.html";
-        else if(title.includes("صلاحيات")) target = "permissions.html";
-        else if(title.includes("عرض")) target = "marketing.html";
-        toast("فتح: " + title.slice(0,40) + (target? " ..." : ""), "info");
-        if(target) setTimeout(()=> window.location.href = target, 700);
-      });
-    });
-    const markAllBtn = findButtonByText("تعليم الكل كمقروء");
-    if(markAllBtn) markAllBtn.addEventListener("click", ()=>{
-      notifItems.forEach((item,i)=>{ item.classList.add("is-read"); readState[i] = true; });
-      lsSet("notifs_read", readState);
-      lsSet("notifs_read_count", notifItems.length);
-      wireTopbarIcons();
-      toast("تم تعليم كل التنبيهات كمقروءة", "success");
-    });
-  }
+/* ================================ Login page ================================ */
+.login-shell{display:flex; min-height:100vh;}
+.login-visual{
+  flex:1.1; background:linear-gradient(155deg,#1a2340,#243268 45%,#2f6bff);
+  color:#fff; padding:50px; display:flex; flex-direction:column; justify-content:center; gap:22px;
+  position:relative; overflow:hidden;
+}
+.login-visual::before, .login-visual::after{
+  content:''; position:absolute; border-radius:50%; background:rgba(255,255,255,.06);
+}
+.login-visual::before{width:420px;height:420px; top:-140px; inset-inline-end:-120px; animation:floatSlow 9s ease-in-out infinite;}
+.login-visual::after{width:280px;height:280px; bottom:-120px; inset-inline-start:-80px; animation:floatSlow 11s ease-in-out infinite reverse;}
+.login-visual h1{font-size:30px; font-weight:800; line-height:1.5; position:relative;}
+.login-visual p{font-size:13.5px; color:#c7d0e6; line-height:1.9; max-width:420px; position:relative;}
+.brand-row{display:flex; align-items:center; gap:12px; position:relative;}
 
-  function initReports(){
-    document.querySelectorAll("button").forEach(btn=>{
-      if(!btn.textContent.includes("تصدير")) return;
-      btn.addEventListener("click", ()=>{
-        const row = btn.closest("tr");
-        const name = row ? row.children[0].textContent.trim() : "تقرير";
-        const original = btn.innerHTML;
-        btn.innerHTML = "جاري التجهيز...";
-        btn.disabled = true;
-        setTimeout(()=>{
-          const content = "Apex — " + name + "\nتاريخ التصدير: " + new Date().toLocaleString("ar-EG") +
-            "\n\nهذا تقرير تجريبي تم توليده تلقائياً من نظام Apex لإدارة الفروع.";
-          const blob = new Blob([content], {type:"text/plain;charset=utf-8"});
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = name.replace(/\s+/g,"_") + ".txt";
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          URL.revokeObjectURL(url);
-          btn.innerHTML = original;
-          btn.disabled = false;
-          toast('تم تصدير "'+name+'" بنجاح', "success");
-        }, 700);
-      });
-    });
-  }
+.login-form-col{flex:1; display:flex; align-items:center; justify-content:center; padding:30px; background:#fff;}
+.login-form{width:100%; max-width:380px; animation:pageIn .5s var(--ease);}
+.login-form h2{font-size:22px; font-weight:800;}
+.login-form .sub{font-size:12.5px; color:var(--text-mute); margin:6px 0 22px;}
+.login-foot{text-align:center; font-size:11px; color:var(--text-mute); margin-top:20px;}
 
-  function initDashboardLinks(){
-    // Make KPI cards on dashboard/sales clickable shortcuts to relevant pages
-    const map = {
-      "إجمالي المبيعات":"sales.html", "المبيعات اليوم":"sales.html",
-      "إجمالي المخزون":"inventory.html", "إجمالي الطلبات":"orders.html",
-      "إجمالي الخسائر":"accounts.html", "الخسائر / المرتجعات":"accounts.html"
-    };
-    document.querySelectorAll(".kpi-card").forEach(card=>{
-      const label = card.querySelector(".kpi-label");
-      if(!label) return;
-      const target = map[label.textContent.trim()];
-      if(target && target !== (PAGE+".html")){
-        card.style.cursor = "pointer";
-        card.addEventListener("click", ()=> window.location.href = target);
-      }
-    });
-  }
+@media (max-width:860px){ .login-visual{display:none;} }
 
-  /* ------------------------------------------------------------------ *
-   *  Boot
-   * ------------------------------------------------------------------ */
-  document.addEventListener("DOMContentLoaded", function(){
-    if(PAGE === "index"){
-      initLoginPage();
-      return; // login page has no app-shell
-    }
+/* Splash / boot animation shown after login */
+.boot-splash{
+  position:fixed; inset:0; z-index:999; display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:18px; background:linear-gradient(155deg,#1a2340,#243268 45%,#2f6bff);
+  color:#fff; opacity:0; animation:splashIn .5s var(--ease) forwards;
+}
+.boot-splash .boot-logo{
+  width:84px;height:84px; border-radius:22px; background:rgba(255,255,255,.12); backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center; animation:logoPulse 1.6s ease-in-out infinite;
+  box-shadow:0 0 0 0 rgba(255,255,255,.25);
+}
+.boot-splash .boot-logo img{width:46px;height:46px;}
+.boot-splash h2{font-size:24px; font-weight:800; letter-spacing:.3px; opacity:0; animation:riseFade .6s var(--ease) .35s forwards;}
+.boot-splash p{font-size:13px; color:#cfd8ee; opacity:0; animation:riseFade .6s var(--ease) .55s forwards;}
+.boot-splash .boot-bar{width:220px; height:4px; border-radius:6px; background:rgba(255,255,255,.18); overflow:hidden; opacity:0; animation:riseFade .5s var(--ease) .7s forwards;}
+.boot-splash .boot-bar span{display:block; height:100%; width:0%; background:#fff; border-radius:6px; animation:bootLoad 1.35s var(--ease) .75s forwards;}
+.boot-splash.leaving{animation:splashOut .45s var(--ease) forwards;}
 
-    setLiveDate();
-    tagSeedRows();
-    hideRemovedRows();
-    applyKpiDeltas();
-    wireRipples();
-    wireRowActions();
-    wireSearchInputs();
-    wireTopbarIcons();
-    initDashboardLinks();
+/* ================================ Modal ================================ */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(20,26,46,.5); backdrop-filter:blur(2px);
+  display:flex; align-items:center; justify-content:center; z-index:200; padding:20px;
+  opacity:0; animation:overlayIn .25s var(--ease) forwards;
+}
+.modal-overlay.leaving{animation:overlayOut .2s var(--ease) forwards;}
+.modal-box{
+  background:#fff; border-radius:16px; width:100%; max-width:460px; max-height:88vh; overflow-y:auto;
+  box-shadow:var(--shadow-lg); transform:translateY(18px) scale(.97); opacity:0;
+  animation:modalIn .32s var(--ease) .05s forwards;
+}
+.modal-overlay.leaving .modal-box{animation:modalOut .2s var(--ease) forwards;}
+.modal-head{display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid var(--card-border);}
+.modal-head h3{font-size:15px; font-weight:800;}
+.modal-close{width:30px;height:30px;border-radius:8px; border:0; background:var(--bg); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:16px; transition:transform .15s var(--ease), background .15s var(--ease);}
+.modal-close:hover{background:var(--red-soft); color:var(--red); transform:rotate(90deg);}
+.modal-body{padding:20px;}
+.modal-foot{padding:14px 20px 20px; display:flex; gap:10px; justify-content:flex-end;}
 
-    const initers = {
-      branches: initBranches,
-      inventory: initInventory,
-      hr: initHR,
-      suppliers: initSuppliers,
-      customers: initCustomers,
-      complaints: initComplaints,
-      maintenance: initMaintenance,
-      marketing: initMarketing,
-      settings: initSettings,
-      permissions: initPermissions,
-      notifications: initNotifications,
-      reports: initReports
-    };
-    if(initers[PAGE]) initers[PAGE]();
+/* ================================ Toasts ================================ */
+.toast-stack{position:fixed; bottom:22px; inset-inline-end:22px; z-index:300; display:flex; flex-direction:column; gap:10px; align-items:flex-end;}
+.toast{
+  background:#1c2333; color:#fff; padding:13px 18px; border-radius:12px; font-size:12.8px; font-weight:700;
+  display:flex; align-items:center; gap:10px; box-shadow:var(--shadow-lg); min-width:220px; max-width:340px;
+  animation:toastIn .35s var(--ease) forwards;
+}
+.toast.success{background:linear-gradient(135deg,#16a34a,#0e8a3c);}
+.toast.error{background:linear-gradient(135deg,var(--red),#b52a1f);}
+.toast.info{background:linear-gradient(135deg,var(--blue),#2557d6);}
+.toast.leaving{animation:toastOut .3s var(--ease) forwards;}
+.toast .dot{width:8px;height:8px;border-radius:50%; background:#fff; flex-shrink:0;}
 
-    // Re-run generic wiring after any dynamic content is added
-    const observer = new MutationObserver(()=>{ wireRipples(); wireRowActions(); });
-    observer.observe(document.body, {childList:true, subtree:true});
+/* ================================ Misc states ================================ */
+.empty-hint{padding:26px; text-align:center; color:var(--text-mute); font-size:12.5px;}
+.pulse-badge{animation:pulseSoft 1.8s ease-in-out infinite;}
+.shake{animation:shake .4s ease;}
+.is-read{opacity:.55;}
+[data-notif-item]{transition:opacity .3s var(--ease), transform .3s var(--ease);}
 
-    // Sidebar toggle for small screens
-    document.querySelectorAll("[data-sidebar-toggle]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        document.querySelector(".sidebar").classList.toggle("open");
-      });
-    });
-  });
-})();
+/* ================================ Keyframes ================================ */
+@keyframes pageIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+@keyframes cardIn{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+@keyframes rowIn{ from{opacity:0; transform:translateY(-6px); background:rgba(47,107,255,.08);} to{opacity:1; transform:translateY(0);} }
+@keyframes rowOut{ to{opacity:0; transform:translateX(20px); height:0; padding:0;} }
+@keyframes brandPop{ from{transform:scale(.6) rotate(-15deg); opacity:0;} to{transform:scale(1) rotate(0); opacity:1;} }
+@keyframes floatSlow{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-22px);} }
+@keyframes splashIn{ from{opacity:0;} to{opacity:1;} }
+@keyframes splashOut{ from{opacity:1;} to{opacity:0; visibility:hidden;} }
+@keyframes logoPulse{ 0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.28); transform:scale(1);} 50%{box-shadow:0 0 0 16px rgba(255,255,255,0); transform:scale(1.05);} }
+@keyframes riseFade{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+@keyframes bootLoad{ from{width:0%;} to{width:100%;} }
+@keyframes overlayIn{ from{opacity:0;} to{opacity:1;} }
+@keyframes overlayOut{ from{opacity:1;} to{opacity:0;} }
+@keyframes modalIn{ from{opacity:0; transform:translateY(18px) scale(.97);} to{opacity:1; transform:translateY(0) scale(1);} }
+@keyframes modalOut{ from{opacity:1; transform:translateY(0) scale(1);} to{opacity:0; transform:translateY(10px) scale(.97);} }
+@keyframes toastIn{ from{opacity:0; transform:translateX(30px);} to{opacity:1; transform:translateX(0);} }
+[dir="rtl"] @keyframes toastIn{ }
+@keyframes toastOut{ from{opacity:1; transform:translateX(0);} to{opacity:0; transform:translateX(30px);} }
+@keyframes pulseSoft{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+@keyframes shake{ 10%,90%{transform:translateX(-1px);} 20%,80%{transform:translateX(2px);} 30%,50%,70%{transform:translateX(-4px);} 40%,60%{transform:translateX(4px);} }
+
+/* ================================ Responsive ================================ */
+@media (max-width:980px){
+  .sidebar{position:fixed; inset-inline-start:0; top:0; height:100vh; transform:translateX(-105%);}
+  [dir="rtl"] .sidebar{transform:translateX(105%);}
+  .sidebar.open{transform:translateX(0);}
+  [data-sidebar-toggle]{display:flex !important;}
+  .app-shell{position:relative;}
+}
