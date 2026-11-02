@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المشتريات · Apex</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>if(window.Chart){Chart.defaults.color='#8b96b4';Chart.defaults.borderColor='rgba(255,255,255,.08)';Chart.defaults.font.family="Cairo";}</script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/logo.svg" alt="Apex">
+    <div class="brand-text">
+      <div class="brand-name">Apex</div>
+      <div class="brand-sub">Branches Under Control</div>
+    </div>
+    <button class="collapse-btn" type="button" title="طي القائمة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></button>
+  </div>
+  <nav class="sidebar-nav"><a class="nav-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg><span>لوحة التحكم</span></a><a class="nav-item" href="branches.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-5 6 5v12"/><path d="M10 21v-5h4v5"/></svg><span>الفروع</span></a><a class="nav-item" href="employees.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 8.5a2.8 2.8 0 1 0 0-5.6M21 20c0-2.8-2-5.1-4.6-5.7"/></svg><span>الموظفين</span></a><a class="nav-item" href="customers.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg><span>العملاء</span></a><a class="nav-item" href="products.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg><span>المنتجات / الخدمات</span></a><a class="nav-item" href="sales.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 6h6v6"/></svg><span>المبيعات</span></a><div class="nav-group">
+              <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M5.5 17.5 9 10h5l3 4.5"/><path d="M9 10 8 7H6"/><path d="M12 10l2 4.5h4.5"/></svg><span>الدليفري</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></div>
+              <div class="nav-submenu"><a class="nav-subitem" href="delivery-orders.html"><span>طلبات الدليفري</span></a><a class="nav-subitem" href="delivery-stats.html"><span>إحصائيات الدليفري</span></a></div>
+            </div><a class="nav-item active" href="purchases.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="14" height="10" rx="1.5"/><path d="M15 10h4l3 3v4h-7"/><circle cx="6" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg><span>المشتريات</span></a><a class="nav-item" href="inventory.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 9 6 3h12l3 6"/><path d="M9 13h6"/></svg><span>المخزون</span></a><a class="nav-item" href="accounts.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg><span>الحسابات والمالية</span></a><a class="nav-item" href="reports.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5m6 14v-7"/><path d="M3 19h18"/></svg><span>التقارير</span></a><a class="nav-item" href="complaints.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/><path d="M8 9h8M8 13h5"/></svg><span>الشكاوى</span></a><a class="nav-item" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9c.2.5.7.9 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg><span>الإعدادات</span></a></nav>
+  <div class="sidebar-foot">
+    <div class="current-branch">
+      <div class="cb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-5 6 5v12"/><path d="M10 21v-5h4v5"/></svg></div>
+      <div class="cb-text"><b>الفرع الحالي</b><span>الفرع الرئيسي</span></div>
+    </div>
+  </div>
+</aside>
+
+  <div class="main-col">
+    <div class="topbar">
+    <div class="topbar-filters">
+      <div class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V9l6-5 6 5v12"/><path d="M10 21v-5h4v5"/></svg><select><option>جميع الفروع</option><option>الفرع الرئيسي</option><option>فرع مدينة نصر</option><option>فرع الشيخ زايد</option><option>فرع أكتوبر</option><option>فرع المعادي</option><option>فرع الإسكندرية</option><option>فرع المنصورة</option><option>فرع طنطا</option><option>فرع الشرقية</option><option>فرع بورسعيد</option></select></div>
+      <div class="pill" id="dateRangePill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>من 2026-09-01 إلى 2026-09-30</span></div>
+      <div class="icon-btn" id="cartPill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.4 12.2a1.6 1.6 0 0 0 1.6 1.3h8.2a1.6 1.6 0 0 0 1.6-1.3L21 8H6"/></svg></div>
+    </div>
+    <div class="topbar-user">
+      <div class="icon-btn" id="expandBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></div>
+      <div class="icon-btn" id="bellBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span class="badge-count">3</span></div>
+      <div class="user-chip">
+        <div class="user-avatar">مم</div>
+        <div>
+          <div class="user-name">مصطفى محمود</div>
+          <div class="user-role">مدير الشركة</div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="page-body">
+      <div class="page-head">
+        <div class="ph-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="14" height="10" rx="1.5"/><path d="M15 10h4l3 3v4h-7"/><circle cx="6" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg></div>
+        <div><h1>المشتريات</h1><p>إدارة الموردين، متابعة الأسعار، وأوامر الشراء الخاصة بالمخزون</p></div>
+      </div>
+      <div class="kpi-row"><div class="kpi-card">
+    <div class="kpi-top">
+      <div class="kpi-icon" style="background:#182140;color:#4f7dff;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="14" height="10" rx="1.5"/><path d="M15 10h4l3 3v4h-7"/><circle cx="6" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg></div>
+      
+    </div>
+    <div class="kpi-value" data-suffix=" EGP">980,000 EGP</div>
+    <div class="kpi-label">إجمالي المشتريات</div>
+  </div><div class="kpi-card">
+    <div class="kpi-top">
+      <div class="kpi-icon" style="background:#241c3d;color:#a78bfa;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg></div>
+      
+    </div>
+    <div class="kpi-value" id="kpiSuppliers">32</div>
+    <div class="kpi-label">عدد الموردين</div>
+  </div><div class="kpi-card">
+    <div class="kpi-top">
+      <div class="kpi-icon" style="background:#3a2e10;color:#fbbf24;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M5.5 17.5 9 10h5l3 4.5"/><path d="M9 10 8 7H6"/><path d="M12 10l2 4.5h4.5"/></svg></div>
+      
+    </div>
+    <div class="kpi-value">9</div>
+    <div class="kpi-label">طلبات شراء معلقة</div>
+  </div></div>
+    <div class="grid-2"><div class="card">
+    <div class="card-head"><h3>أوامر الشراء</h3><button class="btn btn-primary" id="addSupplierBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> طلب شراء جديد</button></div>
+    <div class="table-wrap"><table id="purchasesTable"><thead><tr><th>المورد</th><th>المنتجات</th><th>رقم الهاتف</th><th>تاريخ الطلب</th><th>القيمة</th><th>الحالة</th></tr></thead><tbody><tr><td>مؤسسة الفا للحوم</td><td>لحوم وفراخ</td><td>01098765432</td><td>2026-09-10</td><td>45,000 EGP</td><td><span class="badge cyclable badge-green" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">تم التوريد</span></td></tr><tr><td>شركة النيل للأرز</td><td>أرز ومواد جافة</td><td>01098765433</td><td>2026-09-09</td><td>12,500 EGP</td><td><span class="badge cyclable badge-orange" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">قيد الشحن</span></td></tr><tr><td>مصنع الوفاء للزيوت</td><td>زيوت الطبخ</td><td>01098765434</td><td>2026-09-08</td><td>8,200 EGP</td><td><span class="badge cyclable badge-green" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">تم التوريد</span></td></tr><tr><td>الشرقية للمشروبات</td><td>مشروبات غازية</td><td>01098765435</td><td>2026-09-07</td><td>6,800 EGP</td><td><span class="badge cyclable badge-red" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">متأخر</span></td></tr><tr><td>مزارع الدلتا للخضروات</td><td>خضروات طازجة</td><td>01098765436</td><td>2026-09-06</td><td>9,400 EGP</td><td><span class="badge cyclable badge-green" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">تم التوريد</span></td></tr><tr><td>الأهرام لمواد التعبئة</td><td>عبوات وأكياس</td><td>01098765437</td><td>2026-09-05</td><td>4,100 EGP</td><td><span class="badge cyclable badge-orange" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">قيد الشحن</span></td></tr><tr><td>مطاحن مصر</td><td>دقيق ومخبوزات</td><td>01098765438</td><td>2026-09-04</td><td>7,650 EGP</td><td><span class="badge cyclable badge-green" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">تم التوريد</span></td></tr><tr><td>توابل الشرق</td><td>بهارات وتوابل</td><td>01098765439</td><td>2026-09-03</td><td>3,300 EGP</td><td><span class="badge cyclable badge-green" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">تم التوريد</span></td></tr><tr><td>مصنع الأمانة للألبان</td><td>ألبان وأجبان</td><td>01098765440</td><td>2026-09-02</td><td>5,900 EGP</td><td><span class="badge cyclable badge-orange" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">قيد الشحن</span></td></tr><tr><td>الفجر للدواجن</td><td>دواجن طازجة</td><td>01098765441</td><td>2026-09-01</td><td>38,000 EGP</td><td><span class="badge cyclable badge-green" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">تم التوريد</span></td></tr></tbody></table></div>
+  </div><div class="card">
+    <div class="card-head"><h3>متوسط أسعار الشراء (شهري)</h3></div>
+    <canvas id="suppLine" height="230"></canvas>
+  </div></div>
+    </div>
+  </div>
+</div>
+<script>
+    new Chart(document.getElementById('suppLine'), {
+      type:'line',
+      data:{ labels:['أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر'],
+        datasets:[{ data:[210,225,205,240,260,255], borderColor:'#fbbf24', backgroundColor:'rgba(251,191,36,.1)', fill:true, tension:.4 }] },
+      options:{ plugins:{legend:{display:false}} }
+    });
+    document.getElementById('addSupplierBtn').addEventListener('click', ()=>{
+      openModal({
+        title:'تسجيل طلب شراء جديد',
+        submitLabel:'إرسال الطلب',
+        fields:[
+          {name:'supplier', label:'اسم المورد', placeholder:'مثال: مؤسسة الفا للحوم'},
+          {name:'products', label:'المنتجات المطلوبة', placeholder:'مثال: 100 كجم لحمة'},
+          {name:'value', label:'القيمة التقديرية (EGP)', placeholder:'مثال: 15000'},
+        ],
+        onSubmit:(v)=>{
+          if(!v.supplier){ showToast('من فضلك أدخل اسم المورد','error'); return; }
+          const today = new Date().toISOString().slice(0,10);
+          addRow('purchasesTable', `<td>${v.supplier}</td><td>${v.products||'—'}</td><td>—</td><td>${today}</td><td>${v.value? v.value+' EGP':'—'}</td><td><span class="badge cyclable badge-orange" data-states="تم التوريد|قيد الشحن|متأخر" data-colors="green|orange|red">قيد الشحن</span></td>`);
+          showToast('تم إرسال طلب الشراء للمورد', 'success');
+        }
+      });
+    });
+    </script>
+<script>
+document.getElementById('bellBtn')?.addEventListener('click', ()=> showToast('لديك 3 إشعارات جديدة: مخزون منخفض، شكوى جديدة، طلب متأخر', 'info'));
+document.getElementById('expandBtn')?.addEventListener('click', ()=>{
+  if(!document.fullscreenElement){ document.documentElement.requestFullscreen?.(); } else { document.exitFullscreen?.(); }
+});
+document.getElementById('dateRangePill')?.addEventListener('click', ()=> showToast('تم تطبيق فلترة التاريخ على البيانات المعروضة', 'success'));
+document.getElementById('cartPill')?.addEventListener('click', ()=> window.location.href='delivery-orders.html');
+document.querySelectorAll('.pill select').forEach(s=> s.addEventListener('change', ()=> showToast('تم تحديث البيانات لفرع: ' + s.value, 'success')));
+</script>
+<script src="assets/engine.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
